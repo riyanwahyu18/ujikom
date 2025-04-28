@@ -108,6 +108,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/roles" class="nav-link {{ Request::is('role') ? '' : 'collapsed' }}">
+                        <i class="bi bi-circle"></i><span>Role</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/product" class="nav-link {{ Request::is('product') ? '' : 'collapsed' }}">
                         <i class="bi bi-circle"></i><span>Produk</span>
                     </a>

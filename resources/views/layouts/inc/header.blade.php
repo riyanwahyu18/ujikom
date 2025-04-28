@@ -65,9 +65,9 @@
             {{-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> --}}
             <span class=" d-block">
                 @if (auth()->check())
-                    Hi, {{ auth()->user()->name }}
+                    Hi Selamat Datang, {{ auth()->user()->name }}
                     <a href="/logout" class="ms-2">
-                        Keluar
+                        <i class="bi bi-box-arrow-in-left"></i>
                     </a>
                 @else
                     Guest

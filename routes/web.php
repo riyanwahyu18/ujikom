@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RolesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TransactionController;
 
@@ -22,6 +23,7 @@ Route::group(['middleware' => 'checkAuth'], function () {
     });
 
     Route::resource('users', UsersController::class);
+    Route::resource('roles', RolesController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('product', ProductController::class);
 

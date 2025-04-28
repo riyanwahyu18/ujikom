@@ -1,20 +1,21 @@
 @extends('layouts.main')
 
 @section('content-layout')
-  @include('layouts.inc.header')
-  @include('layouts.inc.sidebar')
+    @include('layouts.inc.header')
+    @include('layouts.inc.head')
 
-  <main id="main" class="main">
-    @hasSection('title')
-    <div class="pagetitle">
-      <h1>
-      @yield('title')
-      </h1>
-    </div>
-    @endif
+    @include('layouts.inc.sidebar')
 
-    @yield('content')
+    <main id="main" class="main">
+        @hasSection('title')
+            <div class="pagetitle">
+                <h1>
+                    @yield('title')
+                </h1>
+            </div>
+        @endif
 
-  </main>
+        @yield('content')
 
+    </main>
 @endsection

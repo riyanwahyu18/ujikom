@@ -1,10 +1,11 @@
 @extends('layouts.admin-layout')
 @extends('layouts.main')
+
 @section('page-title', 'Order')
 @section('content')
 
     @anyrole(['Pimpinan', 'Administrator'])
-        <section class="p-4 rounded mb-4" style="background-color: #f2ece4;">
+        <section class="p-4 rounded mb-4" style="background-color: #f1e9db;">
             <form method="GET" action="{{ route('pos.index') }}">
                 <div class="row g-3 align-items-end">
                     <div class="col-md-3">
@@ -28,7 +29,7 @@
         </section>
 
         @if (isset($report))
-            <section class="p-4 rounded mb-4" style="background-color: #f5f0e6;">
+            <section class="p-4 rounded mb-4" style="background-color: #f1e9db;">
                 <h4>Laporan Penjualan - {{ ucfirst(request('type')) }} ({{ request('date') }})</h4>
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between">
@@ -48,14 +49,14 @@
         @endif
     @endanyrole
 
-    <section class="py-5 text-center rounded" style="background-color: #f2ece4;">
+    <section class="py-5 text-center rounded" style="background-color: #f1e9db;">
         <div class="container">
             <div class="d-flex justify-content-between mb-3">
                 <h3>Order List</h3>
             </div>
 
             <table class="table table-bordered table-striped bg-white">
-                <thead>
+                <thead class="text-center" style="background-color: #0056b3; color: white;">
                     <tr>
                         <th>No</th>
                         <th>Order ID</th>
@@ -68,16 +69,16 @@
                 <tbody>
                     @forelse ($orders as $order)
                         <tr>
-                            <td>{{ $orders->firstItem() + $loop->iteration - 1 }}</td>
+                            <td class="text-center">{{ $orders->firstItem() + $loop->iteration - 1 }}</td>
                             <td>{{ $order->order_code }}</td>
                             <td>Rp. {{ number_format($order->order_amount, 2) }}</td>
                             <td>Rp. {{ number_format($order->order_change, 2) }}</td>
-                            <td>
+                            <td class="text-center">
                                 <span class="badge {{ $order->order_status == 1 ? 'bg-success' : 'bg-secondary' }}">
                                     {{ $order->order_status == 1 ? 'Paid' : 'Unpaid' }}
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <a href="{{ route('pos.show', $order->id) }}" class="btn btn-sm btn-secondary">
                                     <i class="bi bi-eye"></i>
                                 </a>
@@ -96,9 +97,11 @@
                     @endforelse
                 </tbody>
             </table>
-            <div class="d-flex justify-content-center">
+
+            <div class="d-flex justify-content-center mt-4">
                 {{ $orders->appends(request()->query())->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </section>
+
 @endsection

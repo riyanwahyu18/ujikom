@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
 use App\Models\User;
 
 class UsersController extends Controller
 {
-     /**
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $title = "Data Users";
-        $datas = User::get();
-        return view('users.index', compact('title', 'datas'));
+        $datas = User::with('roles')->get();
+        return view('users.index', compact('datas', 'title'));
     }
 
     /**
@@ -22,7 +24,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = Role::where('is_active', 1)->get();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -30,11 +33,12 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        User::create([
+        $user = User::create([
             'name' => $request->name,
-            'email'=> $request->email,
-            'password'=> $request->password,
-        ]) ;
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+        $user->roles()->attach($request->roles);
         return redirect()->to('users');
     }
 
@@ -51,8 +55,9 @@ class UsersController extends Controller
      */
     public function edit(string $id)
     {
-        $edit = User::find($id);
-        return view('users.edit', compact('edit'));
+        $edit = User::with('roles')->findOrFail($id);
+        $roles = Role::all();
+        return view('users.edit', compact('edit', 'roles'));
     }
 
     /**
@@ -60,16 +65,18 @@ class UsersController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // $category = Categories::find( $id );
-        // $category->category_name = $request->category_name;
-        // $Ccategory->save();
-        $users = User::find( $id );
-        User::where('id', $id)->update([
-            'name' => $request->name,
-            'email'=> $request->email,
-            'password'=> $request->password ?? $users->password,
 
-        ]) ;
+        $user = User::findOrFail($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'is_active' => $request->is_active,
+            'password' => $request->password ? $request->password : $user->password,
+
+        ]);
+        if ($request->has('roles')) {
+            $user->roles()->sync($request->roles);
+        }
         return redirect()->to('users');
     }
 
@@ -78,9 +85,16 @@ class UsersController extends Controller
      */
     public function destroy(string $id)
     {
-        // $category = Categories::find( $id );
-        // $category->delete();
-        User::where('id', $id)->delete();
+
+        $user = User::find($id);
+
+        $userRoles = UserRole::where('user_id', (string)$id);
+        if ($userRoles->exists()) {
+            $userRoles->delete();
+        }
+
+        $user->delete();
+
         return redirect()->to('users');
     }
 }

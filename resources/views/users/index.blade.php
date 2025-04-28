@@ -6,57 +6,93 @@
         <div class="row">
             <div class="col-lg-12">
 
-                <div class="card">
+                <div class="card shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $title ?? '' }}</h5>
-                        <div class="mt-4 mb-3">
-                            <div align="right" class="mb-3">
-                                <a class="btn btn-primary" href="{{ route('users.create') }}">Add Users</a>
-                            </div>
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
 
-                                        <th>No</th>
-                                        <th>Nama</th>
+                        {{-- Judul table --}}
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h3 class="card-title mb-0 text-center flex-grow-1">{{ $title ?? 'User List' }}</h3>
+                            <a class="btn btn-primary" href="{{ route('users.create') }}">+ Add User</a>
+                        </div>
+
+                        <form action="{{ route('category.index') }}" method="GET" class="mb-3">
+                            <div class="input-group">
+                                <input type="text" name="search" class="form-control" placeholder="Search by name"
+                                    value="{{ request('search') }}">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                                @if (request('search'))
+                                    <a href="{{ route('category.index') }}" class="btn btn-secondary">Clear</a>
+                                @endif
+                            </div>
+                        </form>
+
+                        {{-- Tabel User --}}
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light text-center">
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th>Name</th>
+                                        <th>Roles</th>
                                         <th>Email</th>
                                         <th>Password</th>
-                                        <th></th>
+                                        <th style="width: 120px;">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php $no=1 @endphp
-                                    @foreach ($datas as $index => $data)
+                                    @forelse ($datas as $index => $data)
                                         <tr>
-                                            <td>{{ $index += 1 }}</td>
+                                            <td class="text-center">{{ $index + 1 }}</td>
                                             <td>{{ $data->name }}</td>
-                                            <td>{{ $data->email }}</td>
-                                            <td>{{ $data->password }}</td>
                                             <td>
+                                                @foreach ($data->roles as $role)
+                                                    @if ($role->name == 'Administrator')
+                                                        <span class="badge bg-success">{{ $role->name }}</span>
+                                                    @elseif ($role->name == 'Pimpinan')
+                                                        <span class="badge bg-primary">{{ $role->name }}</span>
+                                                    @elseif ($role->name == 'Kasir')
+                                                        <span class="badge bg-warning text-dark">{{ $role->name }}</span>
+                                                    @else
+                                                        <span class="badge bg-info text-dark">{{ $role->name }}</span>
+                                                    @endif
+                                                @endforeach
+                                            </td>
+                                            <td>{{ $data->email }}</td>
+                                            <td>••••••••</td> {{-- Password hidden for security --}}
+                                            <td class="text-center">
+                                                {{-- Edit Button --}}
                                                 <a href="{{ route('users.edit', $data->id) }}"
-                                                    class="btn btn-sm btn-outline-primary" title="Edit">
-                                                    <i class="bi bi-pencil-square"></i>
+                                                    class="btn btn-outline-primary p-1 me-1"
+                                                    style="width: 36px; height: 36px;" title="Edit">
+                                                    <i class="bi bi-pencil-square fs-6"></i>
                                                 </a>
-                                                <form class="d-inline" action="{{ route('users.destroy', $data->id) }}"
-                                                    method="post">
+
+                                                {{-- Delete Button --}}
+                                                <form action="{{ route('users.destroy', $data->id) }}" method="POST"
+                                                    class="d-inline">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit" class="btn btn-sm btn-outline-danger btn-hapus"
-                                                        title="Delete" data-name="{{ $data->name }}">
-                                                        <i class="bi bi-trash"></i>
+                                                    <button type="submit" class="btn btn-outline-danger p-1"
+                                                        style="width: 36px; height: 36px;" title="Delete"
+                                                        onclick="return confirm('Are you sure you want to delete this user?')">
+                                                        <i class="bi bi-trash fs-6"></i>
                                                     </button>
                                                 </form>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="6" class="text-center">No users found.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
 
             </div>
-
         </div>
     </section>
 @endsection

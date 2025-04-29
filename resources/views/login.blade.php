@@ -7,7 +7,6 @@
     <style>
         body {
             background-color: #f1e9db;
-            /* Krem background luar */
         }
 
         .login-bg {
@@ -19,13 +18,11 @@
 
         .login-card {
             background-color: #fff8f0;
-            /* Warna dasar form */
             border-radius: 0 1rem 1rem 0;
         }
 
         .btn-primary {
             background-color: #6f4e37;
-            /* Warna kopi */
             border-color: #6f4e37;
         }
 
@@ -33,10 +30,29 @@
             background-color: #5a3c2d;
             border-color: #5a3c2d;
         }
+
+        .btn-download-manual {
+            background-color: #613b0c;
+            /* Orange pastel */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .btn-download-manual:hover {
+            background-color: #7e4e13;
+            color: white;
+            text-decoration: none;
+        }
     </style>
 
     <main>
-        <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="container-fluid min-vh-100 d-flex flex-column align-items-center justify-content-center py-5">
             <div class="row w-100 shadow-lg" style="max-width: 900px;">
 
                 <!-- Left Image -->
@@ -69,25 +85,41 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="yourRole" class="form-label">Role <span class="text-danger">*</span></label>
-                                    <select name="role" class="form-select" id="yourRole" required>
-                                        <option value="" disabled selected>Select Role</option>
-                                        @foreach ($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label for="yourRole" class="form-label">Select Role <span
+                                            class="text-danger">*</span></label>
+                                    <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                                        <span class="input-group-text bg-light border-0">
+                                            <i class="bi bi-person-badge-fill text-secondary"></i>
+                                        </span>
+                                        <select name="role" class="form-select border-0" id="yourRole" required
+                                            style="background-color: #fff8f0;">
+                                            <option value="" disabled selected>Select Role</option>
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100" type="submit">Login</button>
                                 </div>
                             </form>
+
                         </div>
 
                     </div>
                 </div>
 
             </div>
+
+            <!-- Button Manual Book di luar form -->
+            <div class="text-center mt-4">
+                <a href="{{ asset('manual-book/POS_Cafe_Ghibli.pdf') }}" class="btn-download-manual" download>
+                    Download Manual Book
+                </a>
+            </div>
+
         </div>
     </main>
 

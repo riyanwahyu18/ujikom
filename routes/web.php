@@ -29,11 +29,10 @@ Route::group(['middleware' => 'checkAuth'], function () {
 
 
     Route::resource('pos', TransactionController::class);
-});
-
-Route::middleware(['role:Kasir'])->group(function () {
     Route::get('print/{id}', [TransactionController::class, 'print'])->name('print');
 });
+
+Route::middleware(['role:Kasir'])->group(function () {});
 
 
 

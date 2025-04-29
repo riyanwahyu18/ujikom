@@ -54,15 +54,7 @@
                                 @enderror
                             </div>
 
-                            {{-- Product Photo --}}
-                            <div class="mb-4">
-                                <label for="product_photo" class="form-label fw-semibold">Product Photo</label>
-                                <input type="file" name="product_photo" id="product_photo"
-                                    class="form-control rounded-3 shadow-sm @error('product_photo') is-invalid @enderror">
-                                @error('product_photo')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+
 
                             {{-- Product Qty --}}
                             <div class="mb-4">
@@ -95,6 +87,16 @@
                                     class="form-control rounded-3 shadow-sm @error('product_description') is-invalid @enderror" rows="4"
                                     placeholder="Enter product description">{{ old('product_description') }}</textarea>
                                 @error('product_description')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Product Photo --}}
+                            <div class="mb-4">
+                                <label for="product_photo" class="form-label fw-semibold">Product Photo</label>
+                                <input type="file" name="product_photo" id="product_photo"
+                                    class="form-control rounded-3 shadow-sm @error('product_photo') is-invalid @enderror">
+                                @error('product_photo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

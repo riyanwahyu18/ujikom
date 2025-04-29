@@ -4,17 +4,35 @@
     .sidebar {
         background-color: #fff8f0;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        padding-top: 1rem;
+    }
+
+    /* Sidebar nav */
+    .sidebar-nav {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-grow: 1;
     }
 
     /* Sidebar nav links */
     .sidebar .nav-link {
         color: #6f4e37;
-        transition: 0.3s;
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        transition: background-color 0.3s, color 0.3s;
+        font-size: 0.95rem;
     }
 
     .sidebar .nav-link:hover {
         background-color: #f1e9db;
         color: #5a3c2d;
+        text-decoration: none;
     }
 
     /* Active link */
@@ -26,18 +44,30 @@
 
     /* Icons */
     .sidebar .bi {
-        color: #6f4e37;
+        font-size: 1.2rem;
+        color: inherit;
     }
 
     /* Submenu (collapse) styling */
+    .sidebar .nav-content {
+        padding-left: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
     .sidebar .nav-content a {
-        padding-left: 2rem;
+        color: #6f4e37;
         font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: background-color 0.3s, color 0.3s;
     }
 
     .sidebar .nav-content a:hover {
         background-color: #f8ede3;
         color: #5a3c2d;
+        text-decoration: none;
     }
 
     .sidebar .nav-content a:not(.collapsed) {
@@ -50,6 +80,7 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
+        <!-- Dashboard / Stok Barang -->
         <li class="nav-item">
             <a class="nav-link {{ Request::is('dashboard') ? '' : 'collapsed' }}" href="/dashboard">
                 <i class="bi bi-grid"></i>
@@ -65,28 +96,27 @@
         </a>
     </li>
 
+    <!-- Kasir Role -->
     @role('Kasir')
         <li class="nav-item">
-            <a class="nav-link {{ Request::is('dashboard') ? '' : 'collapsed' }}" href="/pos-sale">
-                <i class="bi bi-grid"></i>
-                <span>
-                    Kasir
-                </span>
+            <a class="nav-link {{ Request::is('pos-sale') ? '' : 'collapsed' }}" href="/pos-sale">
+                <i class="bi bi-bag"></i>
+                <span>Kasir</span>
             </a>
         </li>
     @endrole
 
+    <!-- Pimpinan Role -->
     @role('Pimpinan')
         <li class="nav-item">
-            <a class="nav-link {{ Request::is('dashboard') ? '' : 'collapsed' }}" href="/pos">
-                <i class="bi bi-grid"></i>
-                <span>
-                    Laporan Penjualan
-                </span>
+            <a class="nav-link {{ Request::is('pos') ? '' : 'collapsed' }}" href="/pos">
+                <i class="bi bi-bar-chart"></i>
+                <span>Laporan Penjualan</span>
             </a>
         </li>
     @endrole
 
+    <!-- Administrator Role -->
     @role('Administrator')
         <li class="nav-item">
             <a class="nav-link {{ Request::is('category*', 'user', 'product') ? '' : 'collapsed' }}"
@@ -105,11 +135,6 @@
                 <li>
                     <a href="/users" class="nav-link {{ Request::is('user') ? '' : 'collapsed' }}">
                         <i class="bi bi-circle"></i><span>User</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/roles" class="nav-link {{ Request::is('role') ? '' : 'collapsed' }}">
-                        <i class="bi bi-circle"></i><span>Role</span>
                     </a>
                 </li>
                 <li>
@@ -140,7 +165,6 @@
             </ul>
         </li>
     @endrole
-
 
 </ul>
 
